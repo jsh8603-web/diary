@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-baby-pink: #F5E6E0;
+  --color-baby-pink-dark: #E8CFC6;
+  --color-baby-cream: #FFF8F0;
+  --color-baby-cream-dark: #F5EDE3;
+  --color-baby-taupe: #9D7658;
+  --color-baby-taupe-light: #B8956F;
+  --color-baby-taupe-dark: #7A5C44;
+  --color-baby-text: #4A3728;
+  --color-baby-text-light: #8B7355;
+  --color-baby-border: #E8D5C4;
+  --color-baby-white: #FFFFFF;
+
+  --font-serif: "Noto Serif KR", Georgia, serif;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-baby-cream);
+  color: var(--color-baby-text);
+  font-family: var(--font-sans);
+}

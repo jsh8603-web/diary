@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#F5E6E0"/>
+  <circle cx="256" cy="220" r="120" fill="#E8C4B8"/>
+  <ellipse cx="220" cy="200" rx="18" ry="22" fill="#2C2C2C"/>
+  <ellipse cx="292" cy="200" rx="18" ry="22" fill="#2C2C2C"/>
+  <ellipse cx="220" cy="196" rx="6" ry="8" fill="#FFFFFF"/>
+  <ellipse cx="292" cy="196" rx="6" ry="8" fill="#FFFFFF"/>
+  <path d="M230 248 Q256 272 282 248" stroke="#D4918B" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <ellipse cx="190" cy="230" rx="22" ry="14" fill="#F0B0A0" opacity="0.5"/>
+  <ellipse cx="322" cy="230" rx="22" ry="14" fill="#F0B0A0" opacity="0.5"/>
+  <path d="M256 360 C220 360 180 380 180 400 C180 430 220 440 256 440 C292 440 332 430 332 400 C332 380 292 360 256 360Z" fill="#E8C4B8"/>
+  <text x="256" y="490" text-anchor="middle" font-family="sans-serif" font-size="36" fill="#D4918B">diary</text>
+</svg>
