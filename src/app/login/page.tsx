@@ -114,6 +114,7 @@ export default function LoginPage() {
               <input
                 type="text"
                 placeholder="이름"
+                aria-label="이름"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required={isSignUp}
@@ -123,18 +124,22 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="이메일"
+              aria-label="이메일"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
               className="w-full px-4 py-3 rounded-xl border border-baby-border bg-baby-cream text-sm focus:outline-none focus:border-baby-taupe transition-colors"
             />
             <input
               type="password"
               placeholder="비밀번호"
+              aria-label="비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
+              autoComplete={isSignUp ? "new-password" : "current-password"}
               className="w-full px-4 py-3 rounded-xl border border-baby-border bg-baby-cream text-sm focus:outline-none focus:border-baby-taupe transition-colors"
             />
             <button
@@ -147,7 +152,7 @@ export default function LoginPage() {
           </form>
 
           {error && (
-            <p className="text-red-500 text-xs text-center">{error}</p>
+            <p className="text-red-500 text-xs text-center" role="alert">{error}</p>
           )}
 
           <p className="text-center text-xs text-baby-text-light">

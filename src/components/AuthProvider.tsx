@@ -26,14 +26,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
       setLoading(false);
     });
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
-  const isAdminUser = isAdmin(user?.email);
+  const isAdminUser = !loading && isAdmin(user?.email);
 
   return (
     <AuthContext.Provider value={{ user, loading, isAdminUser }}>

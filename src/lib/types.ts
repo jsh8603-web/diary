@@ -36,9 +36,10 @@ export interface AppConfig {
 
 export const ADMIN_EMAILS = (
   process.env.NEXT_PUBLIC_ADMIN_EMAILS || ""
-).split(",").map((e) => e.trim().toLowerCase());
+).split(",").map((e) => e.trim().toLowerCase()).filter((e) => e.length > 0);
 
 export function isAdmin(email: string | null | undefined): boolean {
   if (!email) return false;
+  if (ADMIN_EMAILS.length === 0) return false;
   return ADMIN_EMAILS.includes(email.toLowerCase());
 }

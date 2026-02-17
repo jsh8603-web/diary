@@ -1,13 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { useAuth } from "@/components/AuthProvider";
 import { createEntry, getEntry } from "@/lib/firebase/diary";
 import { uploadPhoto } from "@/lib/firebase/storage";
-import PhotoEditor from "@/components/PhotoEditor";
+import Spinner from "@/components/Spinner";
 import type { PhotoInfo } from "@/lib/types";
 import { format } from "date-fns";
+
+/** PhotoEditor is a heavy modal component - load it only when needed */
+const PhotoEditor = dynamic(() => import("@/components/PhotoEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+      <Spinner size="lg" className="border-white border-t-transparent" />
+    </div>
+  ),
+});
 
 export default function WriteNewForm() {
   const { user } = useAuth();
@@ -21,10 +32,23 @@ export default function WriteNewForm() {
   const [error, setError] = useState("");
   const [editingPhoto, setEditingPhoto] = useState<number | null>(null);
 
+  // Object URL 메모리 누수 방지: 컴포넌트 언마운트 시 revoke
+  useEffect(() => {
+    return () => {
+      previews.forEach((url) => {
+        if (url.startsWith("blob:")) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(e.target.files || []);
     if (files.length + selected.length > 10) {
       setError("사진은 최대 10장까지 업로드할 수 있습니다");
+      e.target.value = "";
       return;
     }
     setFiles((prev) => [...prev, ...selected]);
@@ -35,9 +59,15 @@ export default function WriteNewForm() {
       };
       reader.readAsDataURL(file);
     });
+    // 같은 파일 다시 선택할 수 있도록 input 초기화
+    e.target.value = "";
   }
 
   function removeFile(index: number) {
+    // blob URL인 경우 메모리 해제
+    if (previews[index]?.startsWith("blob:")) {
+      URL.revokeObjectURL(previews[index]);
+    }
     setFiles((prev) => prev.filter((_, i) => i !== index));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   }
@@ -47,6 +77,10 @@ export default function WriteNewForm() {
       type: "image/jpeg",
     });
     const url = URL.createObjectURL(blob);
+    // 이전 blob URL 해제
+    if (previews[index]?.startsWith("blob:")) {
+      URL.revokeObjectURL(previews[index]);
+    }
     setFiles((prev) => prev.map((f, i) => (i === index ? newFile : f)));
     setPreviews((prev) => prev.map((p, i) => (i === index ? url : p)));
     setEditingPhoto(null);
@@ -86,6 +120,7 @@ export default function WriteNewForm() {
 
       router.push(`/diary?date=${date}`);
     } catch (err: unknown) {
+      console.error("일기 저장 실패:", err);
       const msg = err instanceof Error ? err.message : "저장에 실패했습니다";
       setError(msg);
     } finally {
@@ -101,10 +136,11 @@ export default function WriteNewForm() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm text-baby-text-light mb-2">
+          <label htmlFor="new-diary-date" className="block text-sm text-baby-text-light mb-2">
             날짜
           </label>
           <input
+            id="new-diary-date"
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
@@ -114,10 +150,11 @@ export default function WriteNewForm() {
         </div>
 
         <div>
-          <label className="block text-sm text-baby-text-light mb-2">
+          <label htmlFor="new-diary-title" className="block text-sm text-baby-text-light mb-2">
             제목 (선택)
           </label>
           <input
+            id="new-diary-title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -184,10 +221,11 @@ export default function WriteNewForm() {
         </div>
 
         <div>
-          <label className="block text-sm text-baby-text-light mb-2">
+          <label htmlFor="new-diary-content" className="block text-sm text-baby-text-light mb-2">
             내용
           </label>
           <textarea
+            id="new-diary-content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
@@ -197,7 +235,11 @@ export default function WriteNewForm() {
           />
         </div>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        )}
 
         <div className="flex gap-3">
           <button

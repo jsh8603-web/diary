@@ -2,11 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { useAuth } from "@/components/AuthProvider";
 import { getEntry, updateEntry } from "@/lib/firebase/diary";
 import { uploadPhoto, deletePhoto } from "@/lib/firebase/storage";
-import PhotoEditor from "@/components/PhotoEditor";
+import Spinner from "@/components/Spinner";
 import type { DiaryEntry, PhotoInfo } from "@/lib/types";
+
+/** PhotoEditor is a heavy modal component - load it only when needed */
+const PhotoEditor = dynamic(() => import("@/components/PhotoEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
+      <Spinner size="lg" className="border-white border-t-transparent" />
+    </div>
+  ),
+});
 
 interface Props {
   date: string;
@@ -28,33 +39,58 @@ export default function WriteEditForm({ date }: Props) {
   const [error, setError] = useState("");
   const [editingNewPhoto, setEditingNewPhoto] = useState<number | null>(null);
 
+  // Object URL 메모리 누수 방지: 컴포넌트 언마운트 시 revoke
+  useEffect(() => {
+    return () => {
+      newPreviews.forEach((url) => {
+        if (url.startsWith("blob:")) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function handleNewPhotoEditorSave(blob: Blob, index: number) {
     const newFile = new File([blob], newFiles[index].name, {
       type: "image/jpeg",
     });
     const url = URL.createObjectURL(blob);
+    // 이전 blob URL 해제
+    if (newPreviews[index]?.startsWith("blob:")) {
+      URL.revokeObjectURL(newPreviews[index]);
+    }
     setNewFiles((prev) => prev.map((f, i) => (i === index ? newFile : f)));
     setNewPreviews((prev) => prev.map((p, i) => (i === index ? url : p)));
     setEditingNewPhoto(null);
   }
 
   useEffect(() => {
+    let cancelled = false;
     async function load() {
       try {
         const data = await getEntry(date);
-        if (data) {
+        if (!cancelled && data) {
           setEntry(data);
           setTitle(data.title || "");
           setContent(data.content);
-          setExistingPhotos(data.photos);
+          setExistingPhotos(data.photos || []);
         }
-      } catch {
-        // ignore
+      } catch (err) {
+        console.error("일기 데이터 로드 실패:", err);
+        if (!cancelled) {
+          setError("일기를 불러오는데 실패했습니다.");
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
     if (date) load();
+    return () => {
+      cancelled = true;
+    };
   }, [date]);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -62,6 +98,7 @@ export default function WriteEditForm({ date }: Props) {
     const total = existingPhotos.length + newFiles.length + selected.length;
     if (total > 10) {
       setError("사진은 최대 10장까지 업로드할 수 있습니다");
+      e.target.value = "";
       return;
     }
     setNewFiles((prev) => [...prev, ...selected]);
@@ -72,6 +109,8 @@ export default function WriteEditForm({ date }: Props) {
       };
       reader.readAsDataURL(file);
     });
+    // 같은 파일 다시 선택할 수 있도록 input 초기화
+    e.target.value = "";
   }
 
   function removeExistingPhoto(index: number) {
@@ -81,6 +120,10 @@ export default function WriteEditForm({ date }: Props) {
   }
 
   function removeNewFile(index: number) {
+    // blob URL인 경우 메모리 해제
+    if (newPreviews[index]?.startsWith("blob:")) {
+      URL.revokeObjectURL(newPreviews[index]);
+    }
     setNewFiles((prev) => prev.filter((_, i) => i !== index));
     setNewPreviews((prev) => prev.filter((_, i) => i !== index));
   }
@@ -96,8 +139,8 @@ export default function WriteEditForm({ date }: Props) {
       for (const photo of removedPhotos) {
         try {
           await deletePhoto(photo.path);
-        } catch {
-          // ignore
+        } catch (err) {
+          console.error("사진 삭제 실패:", err);
         }
       }
 
@@ -129,7 +172,7 @@ export default function WriteEditForm({ date }: Props) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-3 border-baby-taupe border-t-transparent rounded-full animate-spin" />
+        <Spinner size="lg" />
       </div>
     );
   }
@@ -150,10 +193,11 @@ export default function WriteEditForm({ date }: Props) {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm text-baby-text-light mb-2">
+          <label htmlFor="edit-diary-date" className="block text-sm text-baby-text-light mb-2">
             날짜
           </label>
           <input
+            id="edit-diary-date"
             type="date"
             value={date}
             disabled
@@ -162,10 +206,11 @@ export default function WriteEditForm({ date }: Props) {
         </div>
 
         <div>
-          <label className="block text-sm text-baby-text-light mb-2">
+          <label htmlFor="edit-diary-title" className="block text-sm text-baby-text-light mb-2">
             제목 (선택)
           </label>
           <input
+            id="edit-diary-title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -251,10 +296,11 @@ export default function WriteEditForm({ date }: Props) {
         </div>
 
         <div>
-          <label className="block text-sm text-baby-text-light mb-2">
+          <label htmlFor="edit-diary-content" className="block text-sm text-baby-text-light mb-2">
             내용
           </label>
           <textarea
+            id="edit-diary-content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
@@ -263,7 +309,11 @@ export default function WriteEditForm({ date }: Props) {
           />
         </div>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        )}
 
         <div className="flex gap-3">
           <button

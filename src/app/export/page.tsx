@@ -73,7 +73,8 @@ function ExportForm() {
           fontLoaded = true;
           await generatePDF(doc, entries, true);
         }
-      } catch {
+      } catch (fontErr) {
+        console.error("폰트 로드 실패:", fontErr);
         // 폰트 로드 실패 시 기본 폰트로 fallback
       }
 
@@ -130,7 +131,7 @@ function ExportForm() {
       doc.addPage();
 
       // 사진이 있으면 사진 페이지
-      if (entry.photos.length > 0) {
+      if (entry.photos && entry.photos.length > 0) {
         for (let pi = 0; pi < entry.photos.length; pi++) {
           try {
             const img = await loadImageAsDataUrl(entry.photos[pi].url);
@@ -157,8 +158,8 @@ function ExportForm() {
                 { align: "center" }
               );
             }
-          } catch {
-            // 이미지 로드 실패 시 무시
+          } catch (imgErr) {
+            console.error("이미지 로드 실패:", imgErr);
           }
           // 다음 사진이 있거나 텍스트 페이지로 넘어갈 때 새 페이지
           if (pi < entry.photos.length - 1) {
@@ -228,16 +229,20 @@ function ExportForm() {
 
   async function loadImageAsDataUrl(url: string): Promise<{ dataUrl: string; width: number; height: number }> {
     const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`이미지 로드 실패: ${resp.status}`);
+    }
     const blob = await resp.blob();
-    const dataUrl = await new Promise<string>((resolve) => {
+    const dataUrl = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("FileReader 오류"));
       reader.readAsDataURL(blob);
     });
     const { width, height } = await new Promise<{ width: number; height: number }>((resolve, reject) => {
       const img = new Image();
       img.onload = () => resolve({ width: img.width, height: img.height });
-      img.onerror = reject;
+      img.onerror = () => reject(new Error("이미지 디코딩 실패"));
       img.src = dataUrl;
     });
     return { dataUrl, width, height };
@@ -253,12 +258,13 @@ function ExportForm() {
       </p>
 
       <div className="bg-baby-white rounded-2xl p-6 border border-baby-border space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm text-baby-text-light mb-2">
+            <label htmlFor="export-start-date" className="block text-sm text-baby-text-light mb-2">
               시작일
             </label>
             <input
+              id="export-start-date"
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
@@ -266,10 +272,11 @@ function ExportForm() {
             />
           </div>
           <div>
-            <label className="block text-sm text-baby-text-light mb-2">
+            <label htmlFor="export-end-date" className="block text-sm text-baby-text-light mb-2">
               종료일
             </label>
             <input
+              id="export-end-date"
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
@@ -278,7 +285,11 @@ function ExportForm() {
           </div>
         </div>
 
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        )}
 
         {generating && (
           <div>
@@ -286,7 +297,14 @@ function ExportForm() {
               <span>PDF 생성 중...</span>
               <span>{progress}%</span>
             </div>
-            <div className="w-full bg-baby-cream rounded-full h-2">
+            <div
+              className="w-full bg-baby-cream rounded-full h-2"
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="PDF 생성 진행률"
+            >
               <div
                 className="bg-baby-taupe h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}

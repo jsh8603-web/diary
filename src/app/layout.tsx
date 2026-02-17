@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Serif_KR } from "next/font/google";
 import { AuthProvider } from "@/components/AuthProvider";
+import { ToastProvider } from "@/components/Toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
@@ -45,12 +46,14 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
       </head>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col" suppressHydrationWarning>
         <AuthProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <ServiceWorkerRegister />
+          <ToastProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <ServiceWorkerRegister />
+          </ToastProvider>
         </AuthProvider>
       </body>
     </html>

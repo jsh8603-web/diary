@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useToast } from "@/components/Toast";
 import { stickers, stickerCategories, type StickerDef } from "@/lib/stickers";
 
 interface PlacedSticker {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
+  const { showToast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
   const [placed, setPlaced] = useState<PlacedSticker[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -32,6 +34,21 @@ export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
   } | null>(null);
   const [saving, setSaving] = useState(false);
   const [imgSize, setImgSize] = useState({ w: 0, h: 0 });
+
+  // ESC 키로 에디터 닫기 및 배경 스크롤 방지
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        onCancel();
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [onCancel]);
 
   // 이미지 로드 시 사이즈 추적
   const imgRef = useRef<HTMLImageElement>(null);
@@ -184,8 +201,9 @@ export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
         "image/jpeg",
         0.92
       );
-    } catch {
-      alert("이미지 저장에 실패했습니다");
+    } catch (err) {
+      console.error("이미지 저장 실패:", err);
+      showToast("이미지 저장에 실패했습니다", "error");
     } finally {
       setSaving(false);
     }
@@ -197,7 +215,7 @@ export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
   );
 
   return (
-    <div className="fixed inset-0 bg-black/90 z-50 flex flex-col">
+    <div className="fixed inset-0 bg-black/90 z-50 flex flex-col" role="dialog" aria-modal="true" aria-label="사진 꾸미기">
       {/* 상단 바 */}
       <div className="flex items-center justify-between px-4 py-3 bg-black/50">
         <button
@@ -265,12 +283,14 @@ export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
           <button
             onClick={() => adjustScale(-0.15)}
             className="w-9 h-9 rounded-full bg-white/15 text-white text-lg flex items-center justify-center"
+            aria-label="크기 줄이기"
           >
             −
           </button>
           <button
             onClick={() => adjustScale(0.15)}
             className="w-9 h-9 rounded-full bg-white/15 text-white text-lg flex items-center justify-center"
+            aria-label="크기 키우기"
           >
             +
           </button>
@@ -278,12 +298,14 @@ export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
           <button
             onClick={() => adjustRotation(-15)}
             className="w-9 h-9 rounded-full bg-white/15 text-white text-xs flex items-center justify-center"
+            aria-label="왼쪽으로 회전"
           >
             ↺
           </button>
           <button
             onClick={() => adjustRotation(15)}
             className="w-9 h-9 rounded-full bg-white/15 text-white text-xs flex items-center justify-center"
+            aria-label="오른쪽으로 회전"
           >
             ↻
           </button>
@@ -291,6 +313,7 @@ export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
           <button
             onClick={removeSelected}
             className="w-9 h-9 rounded-full bg-red-500/40 text-white text-sm flex items-center justify-center"
+            aria-label="스티커 삭제"
           >
             ✕
           </button>
