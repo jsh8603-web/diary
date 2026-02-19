@@ -211,6 +211,7 @@ export default function WriteEditForm({ date }: Props) {
           </label>
           <input
             id="edit-diary-title"
+            data-testid="edit-title-input"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -301,6 +302,7 @@ export default function WriteEditForm({ date }: Props) {
           </label>
           <textarea
             id="edit-diary-content"
+            data-testid="edit-content-textarea"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
@@ -317,6 +319,7 @@ export default function WriteEditForm({ date }: Props) {
 
         <div className="flex gap-3">
           <button
+            data-testid="edit-submit-button"
             type="submit"
             disabled={submitting || !content.trim()}
             className="bg-baby-taupe text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-baby-taupe-dark transition-colors disabled:opacity-50"

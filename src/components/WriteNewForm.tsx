@@ -155,6 +155,7 @@ export default function WriteNewForm() {
           </label>
           <input
             id="new-diary-title"
+            data-testid="write-title-input"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -226,6 +227,7 @@ export default function WriteNewForm() {
           </label>
           <textarea
             id="new-diary-content"
+            data-testid="write-content-textarea"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
@@ -243,6 +245,7 @@ export default function WriteNewForm() {
 
         <div className="flex gap-3">
           <button
+            data-testid="write-submit-button"
             type="submit"
             disabled={submitting || !content.trim()}
             className="bg-baby-taupe text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-baby-taupe-dark transition-colors disabled:opacity-50"

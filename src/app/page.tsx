@@ -140,6 +140,7 @@ export default function HomePage() {
           <div>
             <Link
               href="/diary"
+              data-testid="home-cta-diary"
               className="inline-block bg-baby-taupe text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-baby-taupe-dark transition-colors"
             >
               일기 보러가기

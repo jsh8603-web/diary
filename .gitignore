@@ -13,6 +13,11 @@
 # testing
 /coverage
 
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+
 # next.js
 /.next/
 /out/
@@ -23,6 +28,7 @@
 # misc
 .DS_Store
 *.pem
+.mcp.json
 
 # debug
 npm-debug.log*
@@ -38,6 +44,7 @@ yarn-error.log*
 
 # firebase
 .firebase/
+service-account-key.json
 
 # typescript
 *.tsbuildinfo

@@ -77,6 +77,7 @@ export default function LoginPage() {
         <div className="bg-baby-white rounded-2xl p-6 border border-baby-border space-y-4">
           {/* Google 로그인 */}
           <button
+            data-testid="login-google-button"
             onClick={handleGoogle}
             disabled={loading}
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
@@ -122,6 +123,7 @@ export default function LoginPage() {
               />
             )}
             <input
+              data-testid="login-email-input"
               type="email"
               placeholder="이메일"
               aria-label="이메일"
@@ -132,6 +134,7 @@ export default function LoginPage() {
               className="w-full px-4 py-3 rounded-xl border border-baby-border bg-baby-cream text-sm focus:outline-none focus:border-baby-taupe transition-colors"
             />
             <input
+              data-testid="login-password-input"
               type="password"
               placeholder="비밀번호"
               aria-label="비밀번호"
@@ -143,6 +146,7 @@ export default function LoginPage() {
               className="w-full px-4 py-3 rounded-xl border border-baby-border bg-baby-cream text-sm focus:outline-none focus:border-baby-taupe transition-colors"
             />
             <button
+              data-testid="login-submit-button"
               type="submit"
               disabled={loading}
               className="w-full bg-baby-taupe text-white rounded-xl px-4 py-3 text-sm font-medium hover:bg-baby-taupe-dark transition-colors disabled:opacity-50"
@@ -152,7 +156,7 @@ export default function LoginPage() {
           </form>
 
           {error && (
-            <p className="text-red-500 text-xs text-center" role="alert">{error}</p>
+            <p data-testid="login-error-message" className="text-red-500 text-xs text-center" role="alert">{error}</p>
           )}
 
           <p className="text-center text-xs text-baby-text-light">

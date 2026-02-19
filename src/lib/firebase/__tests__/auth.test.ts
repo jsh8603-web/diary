@@ -73,11 +73,25 @@ describe("auth service", () => {
       expect(result).toBeNull();
     });
 
-    it("should rethrow other auth errors", async () => {
+    it("should throw translated Korean error for other auth errors", async () => {
       const authError = { code: "auth/network-request-failed", message: "Network error" };
       mockedSignInWithPopup.mockRejectedValue(authError);
 
-      await expect(signInWithGoogle()).rejects.toEqual(authError);
+      await expect(signInWithGoogle()).rejects.toThrow("네트워크 오류가 발생했습니다.");
+    });
+
+    it("should throw translated Korean error for popup-blocked", async () => {
+      const authError = { code: "auth/popup-blocked" };
+      mockedSignInWithPopup.mockRejectedValue(authError);
+
+      await expect(signInWithGoogle()).rejects.toThrow("팝업이 차단되었습니다.");
+    });
+
+    it("should throw generic Korean error for unknown auth errors", async () => {
+      const authError = { code: "auth/unknown-error", message: "Firebase: Error (auth/unknown-error)" };
+      mockedSignInWithPopup.mockRejectedValue(authError);
+
+      await expect(signInWithGoogle()).rejects.toThrow("로그인에 실패했습니다. 다시 시도해주세요.");
     });
   });
 
@@ -130,6 +144,24 @@ describe("auth service", () => {
     it("should throw for whitespace-only email", async () => {
       await expect(signInWithEmail("   ", "password123")).rejects.toThrow(
         "이메일과 비밀번호를 입력해주세요"
+      );
+    });
+
+    it("should throw translated Korean error for invalid-credential", async () => {
+      const authError = { code: "auth/invalid-credential", message: "Firebase: Error (auth/invalid-credential)" };
+      mockedSignInWithEmailAndPassword.mockRejectedValue(authError);
+
+      await expect(signInWithEmail("test@test.com", "wrongpass")).rejects.toThrow(
+        "이메일 또는 비밀번호가 올바르지 않습니다."
+      );
+    });
+
+    it("should throw translated Korean error for too-many-requests", async () => {
+      const authError = { code: "auth/too-many-requests" };
+      mockedSignInWithEmailAndPassword.mockRejectedValue(authError);
+
+      await expect(signInWithEmail("test@test.com", "password123")).rejects.toThrow(
+        "로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요."
       );
     });
   });
@@ -219,6 +251,15 @@ describe("auth service", () => {
       const result = await signUpWithEmail("test@test.com", "123456", "Name");
 
       expect(result).toEqual(mockResult);
+    });
+
+    it("should throw translated Korean error for email-already-in-use", async () => {
+      const mockUser = { uid: "uid" };
+      mockedCreateUserWithEmailAndPassword.mockRejectedValue({ code: "auth/email-already-in-use" });
+
+      await expect(
+        signUpWithEmail("existing@test.com", "password123", "Name")
+      ).rejects.toThrow("이미 사용 중인 이메일입니다.");
     });
   });
 

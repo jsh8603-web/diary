@@ -171,6 +171,7 @@ export default function DiaryList() {
           {hasMore && (
             <div className="flex justify-center pt-4">
               <button
+                data-testid="diary-load-more-button"
                 onClick={loadMore}
                 disabled={loadingMore}
                 className="px-6 py-3 rounded-xl border border-baby-border text-baby-text-light text-sm hover:bg-baby-cream-dark transition-colors disabled:opacity-50"

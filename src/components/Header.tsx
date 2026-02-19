@@ -19,13 +19,13 @@ export default function Header() {
   return (
     <header className="bg-baby-white/80 backdrop-blur-sm border-b border-baby-border sticky top-0 z-50">
       <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="font-serif text-xl text-baby-taupe font-semibold">
+        <Link href="/" data-testid="header-logo" className="font-serif text-xl text-baby-taupe font-semibold">
           우리 아기 일기
         </Link>
 
         {/* 데스크톱 네비게이션 */}
         <nav className="hidden sm:flex items-center gap-4 text-sm">
-          <Link href="/diary" className="text-baby-text-light hover:text-baby-taupe transition-colors">
+          <Link href="/diary" data-testid="header-nav-diary" className="text-baby-text-light hover:text-baby-taupe transition-colors">
             일기 목록
           </Link>
           {isAdminUser && (
@@ -40,13 +40,14 @@ export default function Header() {
           )}
           {user ? (
             <button
+              data-testid="header-nav-logout"
               onClick={() => logout()}
               className="text-baby-text-light hover:text-baby-taupe transition-colors"
             >
               로그아웃
             </button>
           ) : (
-            <Link href="/login" className="text-baby-taupe font-medium">
+            <Link href="/login" data-testid="header-nav-login" className="text-baby-taupe font-medium">
               로그인
             </Link>
           )}
@@ -54,6 +55,7 @@ export default function Header() {
 
         {/* 모바일 메뉴 버튼 */}
         <button
+          data-testid="header-mobile-menu-toggle"
           className="sm:hidden p-2 text-baby-taupe"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
