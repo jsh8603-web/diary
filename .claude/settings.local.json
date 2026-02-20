@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp add TestSprite --env API_KEY=sk-user-1EEAW6L1anB5OLosg1rWeOa37AqhzyZa3R5Zs4nuBTQblemhWdl9uMpTLGAXUE2tj8tbDxYVTGZdRhH5ae_0ASXjdbABEEmNuAYyjKFwdIPiwCIuEUMW8_qEgqy1YctqeVY -- npx @testsprite/testsprite-mcp@latest)"
+    ]
+  }
+}

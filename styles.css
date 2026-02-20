@@ -1,0 +1,132 @@
+:root {
+    --bg-color: #FDEAEA;
+    /* Soft Pastel Pink */
+    --text-color: #5D5D5D;
+    /* Dark Grey specifically for text */
+    --accent-color: #D4AF37;
+    /* Gold */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: var(--font-sans);
+    color: var(--text-color);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.hero-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 430px;
+    /* iPhone Max width approx */
+    max-height: 932px;
+    background-color: #FDEAEA;
+    /* Soft Pink to match 'Love and Wild' pink book */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 40px;
+    /* Rounded corners like phone screen */
+    overflow: hidden;
+}
+
+/* Texture imitation */
+.texture-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23d4af37' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.image-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border: 8px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* Soft shadow */
+    overflow: hidden;
+    background-color: #eee;
+    transform: rotate(-2deg);
+    /* Organic scrapbook feel */
+    transition: transform 0.3s ease;
+}
+
+.image-frame:hover {
+    transform: rotate(0deg);
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.subtitle {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #8B5E3C;
+    margin-top: 0.5rem;
+}
+
+.cta-button {
+    margin-top: 2rem;
+    padding: 1rem 2.5rem;
+    background-color: white;
+    border: 1px solid var(--accent-color);
+    border-radius: 30px;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.cta-button:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}

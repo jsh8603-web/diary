@@ -1,0 +1,1100 @@
+[
+  {
+    "id": "TC001",
+    "title": "Home page displays hero section and primary landing content",
+    "description": "Verifies the home page loads and shows the hero section, recent entries area, and recent comments area.",
+    "category": "Home Page",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Hero section\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Baby image in hero section\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Recent diary entries\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Recent comments\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Navigate from Home to Diary List using \"일기 보러가기\" CTA",
+    "description": "Verifies the home page CTA takes the user to the diary list page.",
+    "category": "Home Page",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"일기 보러가기\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"일기 보러가기\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Diary list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Open a diary detail by clicking a recent diary entry card",
+    "description": "Verifies a user can open an entry detail page by selecting a recent entry card on the home page.",
+    "category": "Home Page",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Recent diary entry cards\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible diary entry card"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary?date=\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Diary entry detail\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Recent comments section renders and is readable",
+    "description": "Verifies the recent comments section is visible and shows comment items a user can read.",
+    "category": "Home Page",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Recent comments\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one recent comment item\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to \"Recent comments\" section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Recent comments list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Recent entries grid shows entry cards with basic information",
+    "description": "Verifies the recent entries area renders entry cards with visible, user-facing content.",
+    "category": "Home Page",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Recent diary entries\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one diary entry card\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Diary entry card thumbnail image\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Diary entry card date or title text\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Diary list page loads and shows entries grouped by month",
+    "description": "Verifies the diary list renders and shows month grouping headers with entries visible.",
+    "category": "Diary List",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to \"/diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page title contains \"Diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"더 보기\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a month group header\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a diary entry card\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Open a diary entry from the list and land on the diary detail view",
+    "description": "Verifies clicking an entry from the list opens the diary detail page for that entry.",
+    "category": "Diary List",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to \"/diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a diary entry card\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"a diary entry card\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary?date=\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"diary entry content\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"comments section\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Load the next page of diary entries using \"더 보기\"",
+    "description": "Verifies the \"더 보기\" button loads additional entries in the diary list.",
+    "category": "Diary List",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to \"/diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"더 보기\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to \"the bottom of the diary list\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"더 보기\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"additional diary entry cards below the previous last item\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"더 보기\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Month grouping remains visible after loading more entries",
+    "description": "Verifies that month headers and grouping are still present after loading additional pages.",
+    "category": "Diary List",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to \"/diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a month group header\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to \"the bottom of the diary list\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"더 보기\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a month group header\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a diary entry card\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Diary list gracefully handles loading when scrolling near the bottom (infinite scroll behavior)",
+    "description": "Verifies additional entries can load via scrolling near the bottom and the list remains usable.",
+    "category": "Diary List",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to \"/diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a diary entry card\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to \"near the bottom of the diary list\""
+      },
+      {
+        "type": "action",
+        "description": "Wait for \"new diary entry cards to appear\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"a diary entry card\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"더 보기\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "View diary entry details and return to list",
+    "description": "Verifies a diary detail page shows key entry information and allows returning to the diary list.",
+    "category": "Diary Detail",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /diary"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Diary list\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first diary entry in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary?date=\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"목록으로\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Diary entry content\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"목록으로\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary\""
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Open photo lightbox and close with Escape",
+    "description": "Verifies clicking a photo opens the lightbox and it can be closed using the Escape key.",
+    "category": "Diary Detail",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /diary"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first diary entry in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary?date=\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible photo thumbnail in the entry"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Lightbox\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Press \"Escape\" key"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Lightbox\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Navigate photos in lightbox using next arrow and close with X",
+    "description": "Verifies lightbox supports photo navigation and can be closed via the close button.",
+    "category": "Diary Detail",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /diary"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first diary entry in the list"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first visible photo thumbnail in the entry"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Lightbox\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Next\" arrow in the lightbox"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Lightbox image\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"X\" close button in the lightbox"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Lightbox\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Read comments section on diary detail",
+    "description": "Verifies the comments section is visible and readable on the diary detail page.",
+    "category": "Diary Detail",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /diary"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first diary entry in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary?date=\""
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the comments section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Comments\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Post comment\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Logged-in user posts a comment and sees it appear",
+    "description": "Verifies an authenticated user can submit a comment and it becomes visible in the comments list.",
+    "category": "Diary Detail",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email or username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Diary\" navigation link"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first diary entry in the list"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the comments section"
+      },
+      {
+        "type": "action",
+        "description": "Type \"E2E test comment\" into the comment input field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Submit\" in the comments section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"E2E test comment\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Non-admin user does not see Edit/Delete controls on diary detail",
+    "description": "Verifies a regular logged-in user cannot see admin-only Edit and Delete buttons.",
+    "category": "Diary Detail",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email or username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Diary\" navigation link"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first diary entry in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary?date=\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Edit\" is not visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Delete\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Diary detail page handles missing/invalid date parameter gracefully",
+    "description": "Verifies the diary page shows a user-visible empty/error state when no specific entry can be loaded.",
+    "category": "Diary Detail",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /diary?date=1900-01-01"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary?date=1900-01-01\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"not found\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"목록으로\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"목록으로\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary\""
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Create a new diary entry with date, title, content, and submit successfully",
+    "description": "Verifies an admin can create a new diary entry and is redirected to the diary detail page for the selected date.",
+    "category": "Write New Diary",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Write\" or \"New Entry\" navigation item"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/write\""
+      },
+      {
+        "type": "action",
+        "description": "Write content text into the content field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Submit\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Cancel from the new diary entry form returns to the previous/browse experience",
+    "description": "Verifies the Cancel action exits the write form without saving and returns the user to a browsing page.",
+    "category": "Write New Diary",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Write\" or \"New Entry\" navigation item"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/write\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Cancel\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary\""
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Required content validation blocks submit when content is empty",
+    "description": "Verifies the form shows a visible validation error and does not save when required content is missing.",
+    "category": "Write New Diary",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Write\" or \"New Entry\" navigation item"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the submit area of the form"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Non-admin user is blocked from using Write page (access denied or cannot proceed)",
+    "description": "Verifies that a signed-in non-admin user cannot access the Write New Diary feature and sees an access denied state or is redirected away from the write experience.",
+    "category": "Write New Diary",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"nonadmin_user@example.com\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"wrong-but-valid-format\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Wait for page content to load"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Login\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Admin edits an existing diary entry and saves updates",
+    "description": "Verifies an admin can open the edit form, change title/content, submit, and land on the updated diary detail page.",
+    "category": "Edit Diary",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /write?date=YYYY-MM-DD"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Edit\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Title\" field is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Edit form shows pre-filled existing diary data",
+    "description": "Verifies the edit page loads and displays an existing entry’s pre-filled title/content for the selected date.",
+    "category": "Edit Diary",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /write?date=YYYY-MM-DD"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Title\" field is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Content\" field is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Submit\" button is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Admin updates title and content and is redirected to diary detail",
+    "description": "Verifies submitting the edit form redirects to the diary detail page for the same date.",
+    "category": "Edit Diary",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /write?date=YYYY-MM-DD"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Updated Title\" into the \"Title\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Updated content for this diary entry.\" into the \"Content\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Submit\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Admin cancels editing and returns without saving",
+    "description": "Verifies the Cancel action exits the edit form and returns to a non-edit page without submitting changes.",
+    "category": "Edit Diary",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /write?date=YYYY-MM-DD"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Cancel\" button is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Cancel\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary\""
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Admin opens built-in photo editor from an existing photo",
+    "description": "Verifies the photo editor UI can be opened from the edit form for an existing photo.",
+    "category": "Edit Diary",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /write?date=YYYY-MM-DD"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Photos\" section is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Edit\" for the first photo thumbnail"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Photo Editor\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Admin removes an existing photo and confirms removal",
+    "description": "Verifies an admin can initiate removal of a photo, confirm the action, and the photo is no longer shown in the edit form.",
+    "category": "Edit Diary",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /write?date=YYYY-MM-DD"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Remove\" for the first photo thumbnail"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Confirm\" button in the removal confirmation prompt"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Removed\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC028",
+    "title": "Export PDF successfully for a valid date range (shows progress and completes)",
+    "description": "Verifies an admin can generate a PDF for a valid start/end date range and sees progress feedback until completion.",
+    "category": "PDF Export",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Export\" link in the navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/export\""
+      },
+      {
+        "type": "action",
+        "description": "Select start date"
+      }
+    ]
+  },
+  {
+    "id": "TC029",
+    "title": "Header logo navigates back to Home from another page",
+    "description": "Verifies clicking the header logo returns the user to the Home page from a different page.",
+    "category": "Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /diary"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the header logo"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Recent\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC030",
+    "title": "Desktop header link navigates to Diary list",
+    "description": "Verifies the Diary list navigation link in the header takes the user to /diary.",
+    "category": "Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"header\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the header navigation link \"Diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/diary\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Diary\" is visible"
+      }
+    ]
+  }
+]

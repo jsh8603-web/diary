@@ -1,0 +1,132 @@
+import asyncio
+from playwright import async_api
+
+async def run_test():
+    pw = None
+    browser = None
+    context = None
+
+    try:
+        # Start a Playwright session in asynchronous mode
+        pw = await async_api.async_playwright().start()
+
+        # Launch a Chromium browser in headless mode with custom arguments
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=[
+                "--window-size=1280,720",         # Set the browser window size
+                "--disable-dev-shm-usage",        # Avoid using /dev/shm which can cause issues in containers
+                "--ipc=host",                     # Use host-level IPC for better stability
+                "--single-process"                # Run the browser in a single process mode
+            ],
+        )
+
+        # Create a new browser context (like an incognito window)
+        context = await browser.new_context()
+        context.set_default_timeout(5000)
+
+        # Open a new page in the browser context
+        page = await context.new_page()
+
+        # Navigate to your target URL and wait until the network request is committed
+        await page.goto("http://localhost:3000/", wait_until="commit", timeout=10000)
+
+        # Wait for the main page to reach DOMContentLoaded state (optional for stability)
+        try:
+            await page.wait_for_load_state("domcontentloaded", timeout=3000)
+        except async_api.Error:
+            pass
+
+        # Iterate through all iframes and wait for them to load as well
+        for frame in page.frames:
+            try:
+                await frame.wait_for_load_state("domcontentloaded", timeout=3000)
+            except async_api.Error:
+                pass
+
+        # Interact with the page elements to simulate user flow
+        # -> Navigate to http://localhost:3000/
+        await page.goto("http://localhost:3000/", wait_until="commit", timeout=10000)
+        
+        # -> Click the '일기 목록' (Diary list) link to go to the diary listing page.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/header/div/nav/a[1]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click the '일기 목록' (Diary list) link again to navigate to the diary listing page.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/header/div/nav/a[1]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click on the first diary entry in the list to open its detail page.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div/section/div/a[1]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click on the first diary entry in the list to open its detail page (use index 559).
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div/section/div/a[1]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click the first visible photo thumbnail to open the lightbox (image element index 985).
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[2]/div/div[1]/img').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click the '다음 사진' (Next photo) button in the lightbox to navigate to the next image (use interactive element index 1088).
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[4]/button[3]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click the lightbox close button (aria-label=닫기, index 1085) to close the lightbox, then verify it is no longer visible.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[4]/button[1]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Re-open the first photo lightbox (click image index 985) so navigation (Next) can be tested and the displayed image change can be verified.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[2]/div/div[1]/img').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click the '다음 사진' (Next) button in the lightbox (interactive element index 1122) to change the displayed image so the image-change can be verified.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[4]/button[3]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        # -> Click the '다음 사진' Next button (index 1122) to change the image, then click the explicit '사진 2' button (index 1118) to confirm the second image is selectable, then click the close button (index 1119) to close the lightbox and verify it is closed. Then finish the task.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[4]/button[3]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[4]/div/button[2]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=html/body/main/div/div[4]/button[1]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+        await asyncio.sleep(5)
+
+    finally:
+        if context:
+            await context.close()
+        if browser:
+            await browser.close()
+        if pw:
+            await pw.stop()
+
+asyncio.run(run_test())
+    

@@ -1,0 +1,17 @@
+{
+  "status": "init",
+  "scope": "codebase",
+  "type": "frontend",
+  "localEndpoint": "http://localhost:3000/",
+  "serverPort": 63451,
+  "executionArgs": {
+    "projectName": "diary",
+    "projectPath": "D:/projects/diary",
+    "testIds": [],
+    "additionalInstruction": "",
+    "envs": {
+      "API_KEY": "sk-user-1EEAW6L1anB5OLosg1rWeOa37AqhzyZa3R5Zs4nuBTQblemhWdl9uMpTLGAXUE2tj8tbDxYVTGZdRhH5ae_0ASXjdbABEEmNuAYyjKFwdIPiwCIuEUMW8_qEgqy1YctqeVY"
+    }
+  },
+  "proxy": "http://08b82b26-2cc5-4cd9-aca2-bd463eb9af05:Cj8pMyWVRoiCoubpsvSyVwZ8qecFGSS0@tun.testsprite.com:8080"
+}

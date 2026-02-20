@@ -1,0 +1,199 @@
+version: "2"
+type: frontend
+tech_stack:
+  - TypeScript
+  - Next.js 16 (App Router)
+  - React 19
+  - Tailwind CSS 4
+  - Firebase (Auth, Firestore, Storage)
+routes:
+  - path: /
+    file: src/app/page.tsx
+    auth_required: false
+    description: Home page with hero section, recent diary entries and recent comments
+  - path: /login
+    file: src/app/login/page.tsx
+    auth_required: false
+    description: Login page with Google OAuth and email/password authentication
+  - path: /diary
+    file: src/app/diary/page.tsx
+    auth_required: false
+    description: Diary list page with paginated entries grouped by month
+  - path: /diary?date=YYYY-MM-DD
+    file: src/app/diary/page.tsx
+    auth_required: false
+    description: Diary detail page showing a single entry with photos, content, and comments
+  - path: /write
+    file: src/app/write/page.tsx
+    auth_required: true
+    description: New diary entry creation form (admin only)
+  - path: /write?date=YYYY-MM-DD
+    file: src/app/write/page.tsx
+    auth_required: true
+    description: Edit existing diary entry form (admin only)
+  - path: /export
+    file: src/app/export/page.tsx
+    auth_required: true
+    description: PDF export page for diary entries in date range (admin only)
+features:
+  - name: Home Page
+    description: Landing page with hero image, recent diary entries grid, and recent comments list
+    files:
+      - src/app/page.tsx
+      - src/components/Header.tsx
+      - src/components/Footer.tsx
+    entry_route: /
+    user_interactions:
+      - View hero section with baby image
+      - Browse recent diary entry cards
+      - Browse recent comments
+      - Click diary entry card to view detail
+      - Click "일기 보러가기" button to go to diary list
+    api_calls:
+      - method: GET
+        endpoint: Firebase Firestore getRecentEntries(6)
+      - method: GET
+        endpoint: Firebase Firestore getRecentComments(10)
+    auth_required: false
+  - name: User Login
+    description: Login with Google OAuth or email/password credentials, with sign-up option
+    files:
+      - src/app/login/page.tsx
+      - src/lib/firebase/auth.ts
+      - src/components/AuthProvider.tsx
+    entry_route: /login
+    user_interactions:
+      - Click Google login button
+      - Fill email input field
+      - Fill password input field
+      - Click login button to submit
+      - Toggle between login and sign-up mode
+      - Fill name field (sign-up mode only)
+      - See error message on invalid credentials
+    api_calls:
+      - method: POST
+        endpoint: Firebase Auth signInWithGoogle
+      - method: POST
+        endpoint: Firebase Auth signInWithEmail
+      - method: POST
+        endpoint: Firebase Auth signUpWithEmail
+    auth_required: false
+  - name: Diary List
+    description: Paginated list of diary entries grouped by month with infinite scroll
+    files:
+      - src/app/diary/page.tsx
+      - src/components/DiaryList.tsx
+    entry_route: /diary
+    user_interactions:
+      - Browse diary entries grouped by month
+      - Click entry to view diary detail
+      - Click "더 보기" button to load more entries
+      - See empty state with link to write first diary
+    api_calls:
+      - method: GET
+        endpoint: Firebase Firestore getEntriesPage(20)
+    auth_required: false
+  - name: Diary Detail
+    description: View a single diary entry with photos gallery, lightbox, content, admin controls, and comments
+    files:
+      - src/app/diary/page.tsx
+      - src/components/DiaryDetail.tsx
+      - src/components/CommentSection.tsx
+    entry_route: /diary?date=YYYY-MM-DD
+    user_interactions:
+      - View diary date, title, and content
+      - Click photos to open lightbox
+      - Navigate photos with arrows or swipe in lightbox
+      - Close lightbox with ESC or X button
+      - Read and post comments (logged-in users)
+      - Edit diary entry (admin only)
+      - Delete diary entry (admin only)
+      - Click "목록으로" to go back to diary list
+    api_calls:
+      - method: GET
+        endpoint: Firebase Firestore getEntry(date)
+      - method: DELETE
+        endpoint: Firebase Firestore deleteEntry(date)
+      - method: DELETE
+        endpoint: Firebase Storage deletePhoto(path)
+    auth_required: false
+  - name: Write New Diary
+    description: Create new diary entry with date, title, photos (up to 10), photo editor, and content
+    files:
+      - src/app/write/page.tsx
+      - src/components/WriteNewForm.tsx
+      - src/components/PhotoEditor.tsx
+    entry_route: /write
+    user_interactions:
+      - Select date
+      - Enter title (optional)
+      - Upload photos (max 10)
+      - Edit/decorate photos with built-in editor
+      - Remove photos
+      - Write content text
+      - Submit form to save diary
+      - Cancel to go back
+    api_calls:
+      - method: POST
+        endpoint: Firebase Firestore createEntry
+      - method: POST
+        endpoint: Firebase Storage uploadPhoto
+    auth_required: true
+  - name: Edit Diary
+    description: Edit existing diary entry content and manage photos
+    files:
+      - src/app/write/page.tsx
+      - src/components/WriteEditForm.tsx
+      - src/components/PhotoEditor.tsx
+    entry_route: /write?date=YYYY-MM-DD
+    user_interactions:
+      - View pre-filled form with existing diary data
+      - Modify title, content
+      - Add or remove photos
+      - Edit photos with built-in editor
+      - Submit form to update diary
+      - Cancel to go back
+    api_calls:
+      - method: GET
+        endpoint: Firebase Firestore getEntry(date)
+      - method: PUT
+        endpoint: Firebase Firestore updateEntry
+      - method: POST
+        endpoint: Firebase Storage uploadPhoto
+      - method: DELETE
+        endpoint: Firebase Storage deletePhoto
+    auth_required: true
+  - name: PDF Export
+    description: Export diary entries in a date range to a styled A5 PDF with Korean font support
+    files:
+      - src/app/export/page.tsx
+    entry_route: /export
+    user_interactions:
+      - Select start date
+      - Select end date
+      - Click PDF download button
+      - View progress bar during generation
+      - See error messages for validation or generation failures
+    api_calls:
+      - method: GET
+        endpoint: Firebase Firestore getEntriesInRange(startDate, endDate)
+    auth_required: true
+  - name: Navigation
+    description: Responsive header with desktop nav and mobile hamburger menu
+    files:
+      - src/components/Header.tsx
+    entry_route: /
+    user_interactions:
+      - Click logo to go to home
+      - Click navigation links (diary list, write, export)
+      - Open/close mobile menu
+      - Login/logout
+    api_calls: []
+    auth_required: false
+known_limitations:
+  - issue: Firebase backend requires valid credentials; tests without Firebase config will see connection errors
+    location: src/lib/firebase/config.ts
+    impact: All data-fetching features depend on Firebase connectivity
+  - issue: Admin features (write, edit, delete, export) are restricted by ADMIN_EMAILS environment variable
+    location: src/lib/types.ts
+    impact: Non-admin users cannot access write/edit/delete/export features

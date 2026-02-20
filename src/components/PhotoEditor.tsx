@@ -24,7 +24,7 @@ export default function PhotoEditor({ imageUrl, onSave, onCancel }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [placed, setPlaced] = useState<PlacedSticker[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string>("botanical");
+  const [activeCategory, setActiveCategory] = useState<string>("baby-items");
   const [dragging, setDragging] = useState<{
     id: string;
     startX: number;

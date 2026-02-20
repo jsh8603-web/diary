@@ -61,8 +61,8 @@ describe("stickers", () => {
     expect(uniqueIds.size).toBe(ids.length);
   });
 
-  it('each sticker category should be one of "botanical", "text", or "deco"', () => {
-    const validCategories = ["botanical", "text", "deco"];
+  it('each sticker category should be one of "baby-items", "milestone", "emotion", or "deco"', () => {
+    const validCategories = ["baby-items", "milestone", "emotion", "deco"];
     stickers.forEach((sticker) => {
       expect(validCategories).toContain(sticker.category);
     });
@@ -70,8 +70,9 @@ describe("stickers", () => {
 
   it("should have stickers in all defined categories", () => {
     const usedCategories = new Set(stickers.map((s) => s.category));
-    expect(usedCategories.has("botanical")).toBe(true);
-    expect(usedCategories.has("text")).toBe(true);
+    expect(usedCategories.has("baby-items")).toBe(true);
+    expect(usedCategories.has("milestone")).toBe(true);
+    expect(usedCategories.has("emotion")).toBe(true);
     expect(usedCategories.has("deco")).toBe(true);
   });
 });
@@ -91,10 +92,11 @@ describe("stickerCategories", () => {
     });
   });
 
-  it("should contain botanical, text, and deco categories", () => {
+  it("should contain baby-items, milestone, emotion, and deco categories", () => {
     const categoryIds = stickerCategories.map((c) => c.id);
-    expect(categoryIds).toContain("botanical");
-    expect(categoryIds).toContain("text");
+    expect(categoryIds).toContain("baby-items");
+    expect(categoryIds).toContain("milestone");
+    expect(categoryIds).toContain("emotion");
     expect(categoryIds).toContain("deco");
   });
 
